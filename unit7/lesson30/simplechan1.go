@@ -7,19 +7,13 @@ import (
 
 func main() {
 	c := make(chan int)
-	timeout := time.After(2 * time.Second)
-	fmt.Printf("%T\n", timeout)
 	for i := 0; i < 5; i++ {
 		go sleepyGopher(i, c)
 	}
 	for i := 0; i < 5; i++ {
-		select {
-		case gopherId := <-c:
-			fmt.Println("gopher", gopherId, "has finished sleeping")
-		case <-timeout:
-			fmt.Println("run out of time")
-			return
-		}
+		fmt.Println("Start waiting", i)
+		gopherId := <-c
+		fmt.Println("gopher", gopherId, "has finished sleeping")
 	}
 }
 
